@@ -12,6 +12,7 @@ xlrd = "*"
 jupyter-nbextensions-configurator = "*"
 tabula-py = "*"
 pytest = "*"
+xlsxwriter = "*"
 
 [packages]
 pdfminer = "*"
