@@ -11,9 +11,12 @@ black = "*"
 xlrd = "*"
 jupyter-nbextensions-configurator = "*"
 tabula-py = "*"
+pytest = "*"
 
 [packages]
 pdfminer = "*"
+pdfquery = "*"
+blackcellmagic = "*"
 
 [requires]
 python_version = "3.7"
