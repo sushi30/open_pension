@@ -1,8 +1,9 @@
+import joblib
 import pandas as pd
 import tabula
 
 
-def get_asserts_and_liabilities():
+def get_schema_description():
     p678 = tabula.read_pdf(
         "docs/Monthly_reporting_structure.pdf",
         pages=[6, 7, 8],
@@ -19,6 +20,26 @@ def get_asserts_and_liabilities():
     p9 = p9.dropna()
     p678 = p678[p678["מיקום"].str.isnumeric()]
     return pd.concat([p678, p9])
+
+
+def get_asset_type_schema():
+    df = pd.concat(
+        [
+            tabula.read_pdf(
+                "docs/Monthly_reporting_structure.pdf",
+                pages=[9],
+                relative_area=True,
+                area=[30, 0, 100, 100],
+            ),
+            tabula.read_pdf(
+                "docs/Monthly_reporting_structure.pdf",
+                pages=[10, 11],
+                relative_area=True,
+                area=[0, 0, 100, 100],
+            ),
+        ]
+    )
+    return df[df[df.columns[-1]].astype(str).str.isnumeric()]
 
 
 def get_other_info_schema():
@@ -147,17 +168,23 @@ def get_country_origin_schema():
     )
 
 
-extractors = [
-    get_asserts_and_liabilities,
-    get_other_info_schema,
-    get_price_schema,
-    get_id_no_schema,
-    get_asset_country_schema,
-    get_market_type_schema,
-    get_currency_schema,
-    get_rating_agency_schema,
-    get_financial_institution_schemas,
-    get_anchor_interest_schema,
-    get_anchor_interest_duration,
-    get_country_origin_schema,
-]
+extractors = {
+    "schema_description": get_schema_description,
+    "assets": get_asset_type_schema,
+    "info": get_other_info_schema,
+    "price": get_price_schema,
+    "id": get_id_no_schema,
+    "asset_country": get_asset_country_schema,
+    "market_type": get_market_type_schema,
+    "currency": get_currency_schema,
+    "rating_agency": get_rating_agency_schema,
+    "financial_institution": get_financial_institution_schemas,
+    "anchor_interest": get_anchor_interest_schema,
+    "anchor_interest_duration": get_anchor_interest_duration,
+    "origin_country": get_country_origin_schema,
+}
+
+memory = joblib.Memory("tmp", verbose=0)
+cached_extractors = {
+    name: memory.cache(extractor) for name, extractor in extractors.items()
+}

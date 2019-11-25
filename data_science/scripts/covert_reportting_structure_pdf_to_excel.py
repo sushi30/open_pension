@@ -3,9 +3,14 @@ import schema_extractors
 
 
 def main():
+    schemas = {
+        name: extractor()
+        for name, extractor in schema_extractors.cached_extractors.items()
+    }
     with pd.ExcelWriter("tmp/schemas.xlsx") as writer:  # doctest: +SKIP
-        for i, extractor in enumerate(schema_extractors.extractors):
-            extractor().to_excel(writer, sheet_name=extractor, index=False)
+        for name, df in schemas.items():
+            df = df.rename(columns=lambda x: x.replace("\r", " ").strip())
+            df.to_excel(writer, sheet_name=name, index=False)
 
 
 if __name__ == "__main__":

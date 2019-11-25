@@ -13,6 +13,7 @@ jupyter-nbextensions-configurator = "*"
 tabula-py = "*"
 pytest = "*"
 xlsxwriter = "*"
+joblib = "*"
 
 [packages]
 pdfminer = "*"
