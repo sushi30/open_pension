@@ -1,61 +1,20 @@
 service: open-pension
 
 package:
-  exclude:
-    - node_modules/**
-    - venv/**
+  individually: true
 
 plugins:
   - serverless-python-requirements
-
 provider:
   name: aws
   runtime: python2.7
-  region: us-east-1
+  region: us-west-2
   stage: dev
   environment:
-    FAUNADB_SECRET: YOUR-SECRET-HERE
+    OUTPUT_DIRECTORY: directory
+    SCHEMA_FILE: file
 
 functions:
-  create:
-    handler: todos/create.create
-    events:
-      - http:
-          path: todos
-          method: post
-          cors: true
-
-  list:
-    handler: todos/list.list
-    events:
-      - http:
-          path: todos
-          method: get
-          cors: true
-
-  get:
-    handler: todos/get.get
-    events:
-      - http:
-          path: todos/{id}
-          method: get
-          cors: true
-
-  update:
-    handler: todos/update.update
-    events:
-      - http:
-          path: todos/{id}
-          method: put
-          cors: true
-
-  delete:
-    handler: todos/delete.delete
-    events:
-      - http:
-          path: todos/{id}
-          method: delete
-          cors: true
-
-  schema:
-    handler: todos/schema.schema
+  process_k203:
+    handler: app.handler.handler
+    module: process_k203
