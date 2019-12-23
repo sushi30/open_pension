@@ -2,9 +2,16 @@ service: open-pension
 
 package:
   individually: true
+  exclude:
+
 
 plugins:
   - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: 'non-linux'
+
 provider:
   name: aws
   runtime: python2.7
