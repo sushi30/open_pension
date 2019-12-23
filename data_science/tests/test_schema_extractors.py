@@ -1,5 +1,4 @@
 import pytest
-
 import schema_extractors
 import pandas as pd
 
