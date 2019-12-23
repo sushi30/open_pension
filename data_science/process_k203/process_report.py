@@ -3,9 +3,9 @@ import xlrd
 import pandas as pd
 
 
-def get_schemas():
+def get_schemas(path):
     schemas = {}
-    wb = xlrd.open_workbook(os.environ["SCHEMAS_FILE"])
+    wb = xlrd.open_workbook(path)
     for sheet in wb.sheets():
         schemas[sheet.name] = pd.read_excel(wb, sheet.name)
     for key in [
