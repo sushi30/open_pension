@@ -1,6 +1,6 @@
-import os
 import xlrd
 import pandas as pd
+import dask.dataframe as dd
 
 
 def get_schemas(path):
@@ -30,7 +30,7 @@ def apply_schemas(schemas, schema_positions, df):
     for key, pos in schema_positions.items():
         schema = schemas[key]
         df[df.columns[pos]] = apply_schema(schema, pos, df)
-    df.DateCode = pd.to_datetime(df.DateCode, format="%d%m%Y")
+    df.DateCode = dd.to_datetime(df.DateCode, format="%d%m%Y")
     return df
 
 
